@@ -34,7 +34,34 @@ export default function Navbar() {
   }, []);
 
   // Login & Register Modal
-  
+  const [showModal, setShowModal] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+
+  const [activeId, setActiveId]=useState<string>("");
+
+  useEffect(() => {
+    const sections=document.querySelectorAll("section[id]");
+    const obserber = new IntersectionObserver((entries)=>{
+      entries.forEach((entry)=>{
+        if(entry.isIntersecting){
+          setActiveId(`#${entry.target.id}`);
+        }
+      });
+    }, {threshold: 0.2,});
+    sections.forEach((section) => obserber.observe(section));
+    return()=>obserber.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const handleTop=()=>{
+      if(window.scrollY < 80){
+        setActiveId("/");
+      }
+    };
+    window.addEventListener("scroll", handleTop);
+    return () => window.removeEventListener("scroll", handleTop);
+  }, []);
+
   return (
     <>
     {/* Navbar */}
@@ -51,7 +78,8 @@ export default function Navbar() {
         <div className='hidden lg:flex items-center gap-3'>
           <nav className="hidden lg:flex space-x-6 menu-link relative z-40">
             {navLinks.map((link)=>(
-              <Link key={link.label} href={link.href}>
+              <Link key={link.label} href={link.href}
+                onClick={()=>setActiveId(link.href)} className={`flex gap-2 text-lg transition-all ${activeId === link.href ? "font-semibold text-(--prim) border-b-2" : "text-black" } hover:text-(--prim)`}>
                 {link.label}
               </Link>
             ))}
@@ -59,10 +87,35 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-4 nav-right">
-            <button>
-              <i className="bi bi-person w-10 h-10 flex justify-center items-center border border-gray-500 rounded-full hover:bg-white hover:border-white hover:shadow-lg transition-all duration-200 cursor-pointer"></i>
-            </button>
+          <button onClick={()=>{
+            setIsLogin(true);
+            setShowModal(true);
+          }}>
+            <i className="bi bi-person w-10 h-10 flex justify-center items-center border border-gray-500 rounded-full hover:bg-white hover:border-white hover:shadow-lg transition-all duration-200 cursor-pointer"></i>
+          </button>
+
+          {/* {Mobile Hamburger} */}
+          <button className='lg:hidden flex flex-col gap-[5px]' onClick={()=>setOpen(!open)}>
+            <span className={`block w-6 h-[3px] bg-black transition-all ${open ? "rotate-45 translate-y-2" : ""}`}></span>
+            <span className={`block w-6 h-[3px] bg-black transition-all ${open ? "opacity-0" : ""}`}></span>
+            <span className={`block w-6 h-[3px] bg-black transition-all ${open ? "-rotate-45 -translate-y-2" : ""}`}></span>
+          </button>
         </div>
+
+        {/* {Mobile Menu} */}
+        <div className={`lg:hidden fixed top-[60px] bg-white left-0 w-full z-50 transition-all duration-300 ${open ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"}`}>
+          <div className="mx-[5%] rounded-2xl shadow-2xl border border-white/10">
+            <nav className="flex flex-col px-6 py-6 gap-5">
+              {navLinks.map((link)=>(
+                <Link key={link.label} href={link.href}
+                  onClick={()=>setOpen(false)} className="flex items-center justify-between text-black border-b border-black/10 text-lg tracking-wide hover:text-(--prim) transition-all Cirvuler-font">
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </div>
+
       </div>
     </div>
 
