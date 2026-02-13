@@ -20,7 +20,7 @@ const navLinks: NavLink[] = [
 ];
 
 export default function Navbar() {
-
+  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -32,6 +32,9 @@ export default function Navbar() {
       window.removeEventListener('scroll', handleScroll);
     }
   }, []);
+
+  // Login & Register Modal
+  
   return (
     <>
     {/* Navbar */}
