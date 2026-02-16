@@ -1,8 +1,6 @@
 "use client"
-import React, { useState , useEffect} from 'react'
-import Image from 'next/image'
+import { useState , useEffect} from 'react'
 import Link from 'next/link'
-import { DiVim } from 'react-icons/di'
 
 type NavLink = {
   label: string;
@@ -158,6 +156,17 @@ export default function Navbar() {
               <button type='button' className='text-(--prim) cursor-pointer hover:underline transition-all' onClick={()=>setIsLogin(true)}>Login Here</button></>
             )}
           </p>
+
+          {/* {Footer} */}
+          <p className='text-center text-sm mt-6 pt-4 border-t border-white/10'>
+          By signing in or singning up to <strong>uicode</strong>, you agree to our {""} 
+          <Link href="/" className='text-(--prim) hover:underline'>
+            Terms of Use
+          </Link>
+          and{""}
+          <Link href="/" className='text-(--prim) hover:underline'>
+            Privacy Policy
+          </Link></p>
         </div>
        </div>)}
     </div>
