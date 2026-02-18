@@ -1,6 +1,9 @@
 "use client"
 
 import Image from 'next/image'
+import HeroImg from "@/public/Hero.webp"
+import clutchImg from "@/public/clutch.svg"
+import arrowImg from "@/public/arrow-shape-1.svg"
 import { BsArrow90DegDown} from 'react-icons/bs'
 
 import CountUp from 'react-countup';
